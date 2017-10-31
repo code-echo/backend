@@ -69,7 +69,7 @@ async def new_user_handler(request):
   user = await db['users'].find_one({ "username": username })
   if user is not None: return res.json({ "message": "A user with this username already exists", "status": 409 })
   user = await db['users'].find_one({ "email": email })
-  if user is not None: return res.json({ "message": "A user with thsi email already exists", "status": 409 })
+  if user is not None: return res.json({ "message": "A user with this email already exists", "status": 409 })
 
   # Hash password
   hashed_pass = ph.hash(password)
