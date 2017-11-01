@@ -38,7 +38,8 @@ async def auth_handler(request):
 
   # Ensure user exists in database
   user = await db['users'].find_one({ "username": username })
-  if not user: raise exc.Forbidden("Invalid credentials")
+  if not user:
+    raise exc.Forbidden("Invalid credentials")
 
   # Ensure password is correct
   try:
