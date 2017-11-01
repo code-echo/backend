@@ -1,6 +1,4 @@
 {
-  "app_host": "localhost",
-  "app_port": 8080,
   "mongo_host": "localhost",
   "mongo_port": 27017,
   "mongo_db_name": "codeecho"
