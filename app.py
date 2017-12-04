@@ -19,7 +19,7 @@ def init(sanic, loop):
   global db
   from motor.motor_asyncio import AsyncIOMotorClient
   db = AsyncIOMotorClient(
-    host=config.get('mongo_host', '0.0.0.0'),
+    host=config.get('mongo_host', 'localhost'),
     port=config.get('mongo_port', 27017)
   )[config.get('mongo_db_name', 'codeecho')]
 
