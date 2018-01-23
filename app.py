@@ -108,45 +108,61 @@ async def user_handler(req, user_id):
   #if req.method == 'GET':
   raise exc.NotFound("Soon™")
 
-@app.route('/api/repo', methods=['POST'])
-async def new_repo_handler(req):
+# Create new repo
+@app.route('/api/repositories', methods=['POST'])
+async def create_repo(req):
   """TODO New repo"""
   raise exc.NotFound("Soon™")
 
-# Existing repo
-@app.route('/api/repo/<repo_id:int>', methods=['GET', 'POST', 'DELETE'])
-async def repo_handler(req, repo_id):
+# Get repo
+@app.route('/api/repositories/<repo_id:int>', methods=['GET'])
+async def get_repo(req, repo_id):
   """Handles requests for existing repositories"""
   if not repo_id:
     raise exc.InvalidUsage("Bad request")
+  
+  repo = await db['repos'].find_one({ "_id": repo_id })
+  if not repo:
+    raise exc.NotFound("Resource not found")
 
-  # Get repository
-  if req.method == 'GET':
-    # TODO auth check
+  # Temporary confirmation
+  return res.json({ "message": f"You've requested repository ID {repo_id}" })
 
-    repo = await db['repos'].find_one({ "_id": repo_id })
-    if not repo:
-      raise exc.NotFound("Resource not found")
-    
-    # Temporary confirmation
-    return res.json({ "message": f"You've requested repository ID {repo_id}" })
+# Update repo
+@app.route('/api/repositories/<repo_id:int>/update', methods=['POST'])
+async def update_repo(req, repo_id):
+  if not repo_id:
+    raise exc.InvalidUsage("Bad request")
+  
+  # TODO auth check
+  
+  repo = await db['repos'].find_one({ "_id": repo_id })
+  if not repo:
+    raise exc.Forbidden("Repository doesn't exist")
+  else:
+    # TODO Update repo
+    pass
+  
+  # Temporary
+  return res.json({ "message": "TODO" })
 
-  # Update repository
-  elif req.method == 'POST':
-    repo = await db['repos'].find_one({ "_id": repo_id })
-    if not repo:
-      raise exc.Forbidden("Repository doesn't exist")
-    else:
-      # TODO Update repo
-      pass
-
-  # Delete repository
-  elif req.method == 'DELETE':
-    repo = await db['repos'].find_one({ "_id": repo_id })
-    if not repo:
-      raise exc.Forbidden("Repository doesn't exist")
-    else:
-      return res.json({ "message": "testing" })
+# Delete repo
+@app.route('/api/repositories/<repo_id:int>/delete', methods=['DELETE'])
+async def delete_repo(req, repo_id):
+  if not repo_id:
+    raise exc.InvalidUsage("Bad request")
+  
+  # TODO auth check
+  
+  repo = await db['repos'].find_one({ "_id": repo_id })
+  if not repo:
+    raise exc.Forbidden("Repository doesn't exist")
+  else:
+    # TODO delete repo
+    pass
+  
+  # Temporary
+  return res.json({ "message": "TODO" })
 
 @app.exception(exc.SanicException)
 def errors(request, exception):
